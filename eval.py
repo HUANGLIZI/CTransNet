@@ -382,45 +382,45 @@ def metrics(preds, labels):
         return acc, sensitivity, specificity, precision,  F1, auc, kappa
 
 
-# parser = argparse.ArgumentParser()
-# parser.add_argument('--root_path', type=str,
-#                     default='../dataset/SMU/', help='Name of Experiment')
-# parser.add_argument('--exp', type=str,
-#                     default='multimodal_reproduce', help='experiment_name')
-# parser.add_argument('--num_classes', type=str,  default="three",
-#                     help='output channel of network')
-# parser.add_argument('--model', type=str,
-#                     default='resnet50&Transformer', help='model_name')
-# parser.add_argument('--max_iterations', type=int,
-#                     default=6000, help='maximum epoch number to train')
-# parser.add_argument('--batch_size', type=int, default=24,
-#                     help='batch_size per gpu')
-# parser.add_argument('--deterministic', type=int,  default=1,
-#                     help='whether use deterministic training')
-# parser.add_argument('--base_lr', type=float,  default=0.0001,
-#                     help='segmentation network learning rate')
-# parser.add_argument('--patch_size', type=list,  default=[224, 224],
-#                     help='patch size of network input')
-# parser.add_argument('--seed', type=int,  default=1337, help='random seed')
-# args = parser.parse_args()
+parser = argparse.ArgumentParser()
+parser.add_argument('--root_path', type=str,
+                    default='../dataset/SMU/', help='Name of Experiment')
+parser.add_argument('--exp', type=str,
+                    default='multimodal_reproduce', help='experiment_name')
+parser.add_argument('--num_classes', type=str,  default="three",
+                    help='output channel of network')
+parser.add_argument('--model', type=str,
+                    default='resnet50&Transformer', help='model_name')
+parser.add_argument('--max_iterations', type=int,
+                    default=6000, help='maximum epoch number to train')
+parser.add_argument('--batch_size', type=int, default=24,
+                    help='batch_size per gpu')
+parser.add_argument('--deterministic', type=int,  default=1,
+                    help='whether use deterministic training')
+parser.add_argument('--base_lr', type=float,  default=0.0001,
+                    help='segmentation network learning rate')
+parser.add_argument('--patch_size', type=list,  default=[224, 224],
+                    help='patch size of network input')
+parser.add_argument('--seed', type=int,  default=1337, help='random seed')
+args = parser.parse_args()
 
-# base_lr = args.base_lr
-# num_classes = 3
-# batch_size = 1
+base_lr = args.base_lr
+num_classes = 3
+batch_size = 1
 
-# config_vit = config.get_CTranS_config()
-# model = CTransNet(config_vit, num_classes, image_feature_length=1000, radiomics_feature_length=584,
-#                                  clinical_feature_length=9, ihc_feature_length=8, feature_planes=128).cuda()
-# model.load_state_dict(torch.load('/lizihan/lzh/SMU-GC-Cls/model/multimodal_reproduce/resnet50_Transformer_three/iter_5500.pth'))
-# # db = BaseDataSet(base_dir=args.root_path, split="val", classes=args.num_classes)
+config_vit = config.get_CTranS_config()
+model = CTransNet(config_vit, num_classes, image_feature_length=1000, radiomics_feature_length=584,
+                                 clinical_feature_length=9, ihc_feature_length=8, feature_planes=128).cuda()
+model.load_state_dict(torch.load('/lizihan/lzh/SMU-GC-Cls/model/multimodal_reproduce/resnet50_Transformer_three/iter_5500.pth'))
+db = BaseDataSet(base_dir=args.root_path, split="val", classes=args.num_classes)
 # db_val = BaseDataSet(base_dir=args.root_path, split="train", classes=args.num_classes)
 
-# valloader = DataLoader(db_val, batch_size=1, shuffle=False,
-#                            num_workers=1)
+valloader = DataLoader(db_val, batch_size=1, shuffle=False,
+                           num_workers=1)
 
-# acc, sensitivity, specificity, precision, F1, auc, kappa, id_list, results_list, results_list_pred,labels_list = validate(
-#                     model, valloader, num_classes)
+acc, sensitivity, specificity, precision, F1, auc, kappa, id_list, results_list, results_list_pred,labels_list = validate(
+                    model, valloader, num_classes)
 
-# dict = {'ImageID': id_list, 'pred_prob': results_list, 'pred':results_list_pred, 'label': labels_list}
-# df = pd.DataFrame(dict)
-# df.to_csv('train_pred.csv',index=False)
+dict = {'ImageID': id_list, 'pred_prob': results_list, 'pred':results_list_pred, 'label': labels_list}
+df = pd.DataFrame(dict)
+df.to_csv('train_pred.csv',index=False)
