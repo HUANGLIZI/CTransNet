@@ -412,7 +412,7 @@ config_vit = config.get_CTranS_config()
 model = CTransNet(config_vit, num_classes, image_feature_length=1000, radiomics_feature_length=584,
                                  clinical_feature_length=9, ihc_feature_length=8, feature_planes=128).cuda()
 model.load_state_dict(torch.load('/lizihan/lzh/SMU-GC-Cls/model/multimodal_reproduce/resnet50_Transformer_three/iter_5500.pth'))
-# db = BaseDataSet(base_dir=args.root_path, split="val", classes=args.num_classes)
+# db = BaseDataSet(base_dir=args.root_path, split="train", classes=args.num_classes)
 db_val = BaseDataSet(base_dir=args.root_path, split="val", classes=args.num_classes)
 
 valloader = DataLoader(db_val, batch_size=1, shuffle=False,
