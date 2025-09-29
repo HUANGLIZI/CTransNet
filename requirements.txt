@@ -106,12 +106,12 @@ threadpoolctl==3.1.0
 tifffile==2022.7.31
 timm==0.6.7
 tinycss2==1.1.1
-torch==1.7.1+cu101
+torch==1.7.1
 torchaudio==0.7.2
 torchfile==0.1.0
 torchinfo==1.7.0
 torchsummary==1.5.1
-torchvision==0.8.2+cu101
+torchvision==0.8.2
 tornado==6.2
 tqdm==4.64.0
 traitlets==5.4.0
@@ -125,6 +125,5 @@ websocket-client==1.4.1
 widgetsnbextension==4.0.3
 xlrd==1.2.0
 argparse
-logging
 h5py
 lifelines
