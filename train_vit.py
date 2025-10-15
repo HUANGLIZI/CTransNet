@@ -32,7 +32,7 @@ from losses import Loglike_loss, L2_Regu_loss, NegativeLogLikelihood, cox_loss, 
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--root_path', type=str,
-                    default='../dataset/SMU/', help='Name of Experiment')
+                    default='./dataset/SMU/', help='Name of Experiment')
 parser.add_argument('--exp', type=str,
                     default='multimodal_reproduce', help='experiment_name')
 parser.add_argument('--num_classes', type=str,  default="three",
@@ -40,7 +40,7 @@ parser.add_argument('--num_classes', type=str,  default="three",
 parser.add_argument('--model', type=str,
                     default='resnet50&Transformer', help='model_name')
 parser.add_argument('--max_iterations', type=int,
-                    default=6000, help='maximum epoch number to train')
+                    default=10000, help='maximum epoch number to train')
 parser.add_argument('--batch_size', type=int, default=24,
                     help='batch_size per gpu')
 parser.add_argument('--deterministic', type=int,  default=1,
@@ -64,7 +64,7 @@ def train(args, snapshot_path):
     print(num_classes)
     config_vit = config.get_CTranS_config()
     model = CTransNet(config_vit, num_classes, image_feature_length=1000, radiomics_feature_length=584,
-                                 clinical_feature_length=9, ihc_feature_length=8, feature_planes=128).cuda()
+                                 clinical_feature_length=9, feature_planes=128).cuda()
     db_train = BaseDataSet(base_dir=args.root_path, split="train", classes=args.num_classes, transform=transforms.Compose([
         RandomGenerator(args.patch_size)
     ]))
@@ -74,14 +74,14 @@ def train(args, snapshot_path):
         random.seed(args.seed + worker_id)
 
     trainloader = DataLoader(db_train, batch_size=batch_size, shuffle=True,
-                             num_workers=16, pin_memory=True, worker_init_fn=worker_init_fn)
+                             num_workers=8, pin_memory=True, worker_init_fn=worker_init_fn)
     valloader = DataLoader(db_val, batch_size=1, shuffle=False,
                            num_workers=1)
 
     model.train()
 
     optimizer = optim.SGD(model.parameters(), lr=base_lr,
-                          momentum=0.9, weight_decay=0.0001)
+                          momentum=0.9, weight_decay=0.00001)
     ce_loss = CrossEntropyLoss()
 
     writer = SummaryWriter(snapshot_path + '/log')
@@ -100,11 +100,11 @@ def train(args, snapshot_path):
         for i_batch, sampled_batch in enumerate(trainloader):
             volume_batch, label_batch, os_batch = sampled_batch['image'].cuda(
             ), sampled_batch['diagnosis'].cuda(), sampled_batch['os'].cuda()
-            radimocis, ihc, clinical = sampled_batch['radimocis'].cuda(
-            ), sampled_batch['ihc'].cuda(), sampled_batch["clinical"].cuda()
-            outputs = model(volume_batch, radimocis, clinical, ihc)
+            radimocis, clinical = sampled_batch['radimocis'].cuda(
+            ), sampled_batch["clinical"].cuda()
+            outputs = model(volume_batch, radimocis, clinical)
             contrastive_loss = nn.CosineEmbeddingLoss(margin=0.5)
-            loss = NegativeLogLikelihood(-outputs[2], os_batch[:, 0], os_batch[:, 1])+L2_Regu_loss(weights=outputs[1], alpha=0.1) + ce_loss(outputs[0], label_batch.long())+ contrastive_loss(outputs[3], outputs[4], torch.ones(volume_batch.shape[0]).cuda())*0.2
+            loss = NegativeLogLikelihood(-outputs[2], os_batch[:, 0], os_batch[:, 1])*0.5+L2_Regu_loss(weights=outputs[1], alpha=0.1)*0.5 + ce_loss(outputs[0], label_batch.long())+ contrastive_loss(outputs[3], outputs[4], torch.ones(volume_batch.shape[0]).cuda())*0.1
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -190,14 +190,14 @@ if __name__ == "__main__":
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed(args.seed)
 
-    snapshot_path = "../model/{}/{}_{}".format(
+    snapshot_path = "./model/{}/{}_{}".format(
         args.exp, args.model, args.num_classes)
     if not os.path.exists(snapshot_path):
         os.makedirs(snapshot_path)
-    if os.path.exists(snapshot_path + '/code'):
-        shutil.rmtree(snapshot_path + '/code')
-    shutil.copytree('.', snapshot_path + '/code',
-                    shutil.ignore_patterns(['.git', '__pycache__']))
+    # if os.path.exists(snapshot_path + '/code'):
+    #     shutil.rmtree(snapshot_path + '/code')
+    # shutil.copytree('.', snapshot_path + '/code',
+    #                 shutil.ignore_patterns(['.git', '__pycache__']))
 
     logging.basicConfig(filename=snapshot_path+"/log.txt", level=logging.INFO,
                         format='[%(asctime)s.%(msecs)03d] %(message)s', datefmt='%H:%M:%S')
