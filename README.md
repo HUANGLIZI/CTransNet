@@ -8,6 +8,9 @@ Python == 3.8 and install from the ```requirements.txt``` using:
 ```angular2html
 pip install -r requirements.txt
 ```
+## Pre-trained model
+
+The model weights of CTransNet can be downloaded at the [link](https://drive.google.com/file/d/1LKFHLwJS8N0gJ8fkH4U-TI06tLMmzNZb/view?usp=sharing). You may need to send the request to get the access permission.
 
 ## Usage
 
