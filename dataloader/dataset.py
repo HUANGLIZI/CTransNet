@@ -93,7 +93,7 @@ class BaseDataSet(Dataset):
         id = h5f["id"][()]
         radimocis = h5f["radimocis_feature"][:]
         clinical = h5f["clinical_feature"][:]
-        ihc = h5f["ihc_8"][:]
+        # ihc = h5f["ihc_8"][:]
         os_ = h5f["os"][:]
         if self.surv == "DFS":
             time = np.array([os_[0]])
@@ -111,7 +111,7 @@ class BaseDataSet(Dataset):
         # np.array([time, event])
         if self.split == "train":
             sample = {"id": id, "image": image, "label": label, "radimocis": radimocis,
-                      "clinical": clinical, "ihc": ihc, "os": np.array([time, event]), "diagnosis": diagnosis}
+                      "clinical": clinical, "os": np.array([time, event]), "diagnosis": diagnosis}
             sample = self.transform(sample)
         else:
             output_size = (224, 224)
@@ -131,8 +131,8 @@ class BaseDataSet(Dataset):
             label = torch.from_numpy(label.astype(np.uint8))
 
             sample = {"id": id,"image": image, "label": label, "radimocis": torch.from_numpy(radimocis.astype(np.float32)),
-                      "clinical": torch.from_numpy(clinical.astype(np.float32)), "ihc": torch.from_numpy(ihc.astype(np.float32)),
-                      "os": torch.from_numpy(np.array([time, event])), "diagnosis": torch.from_numpy(np.array(diagnosis).astype(np.uint8))}
+                      "clinical": torch.from_numpy(clinical.astype(np.float32)), "os": torch.from_numpy(np.array([time, event])),
+                      "diagnosis": torch.from_numpy(np.array(diagnosis).astype(np.uint8))}
         sample["idx"] = idx
         return sample
 
@@ -238,8 +238,8 @@ class RandomGenerator(object):
         new_sample["label"] = label
         new_sample["radimocis"] = torch.from_numpy(
             sample["radimocis"].astype(np.float32))
-        new_sample["ihc"] = torch.from_numpy(
-            sample["ihc"].astype(np.float32))
+        # new_sample["ihc"] = torch.from_numpy(
+        #     sample["ihc"].astype(np.float32))
         new_sample["clinical"] = torch.from_numpy(
             sample["clinical"].astype(np.float32))
         new_sample["os"] = torch.from_numpy(sample["os"].astype(np.float32))
