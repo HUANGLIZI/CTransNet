@@ -233,7 +233,7 @@ def resnet50(pretrained=False, **kwargs):
     return model
 
 class CTransNet(nn.Module):
-    def __init__(self, config, n_classes, image_feature_length=1000, radiomics_feature_length=538, clinical_feature_length=34, ihc_feature_length=20, feature_planes=256, vis=False):
+    def __init__(self, config, n_classes, image_feature_length=1000, radiomics_feature_length=538, clinical_feature_length=34, feature_planes=256, vis=False):
         super().__init__()
         self.vis = vis
         self.depth = 4
@@ -243,7 +243,7 @@ class CTransNet(nn.Module):
         self.image2vit_reg = nn.Linear(image_feature_length, 256)
         self.radiomics2vit_reg = nn.Linear(radiomics_feature_length, 256)
         self.clinical2vit_reg = nn.Linear(clinical_feature_length, 256)
-        self.ihc2vit = nn.Linear(ihc_feature_length, 256)
+        # self.ihc2vit = nn.Linear(ihc_feature_length, 256)
         self.Encoder_blocks = nn.Sequential(*[
             Block(dim=256, num_heads=8, mlp_ratio=4.0)
             for _ in range(self.depth)])
@@ -272,7 +272,7 @@ class CTransNet(nn.Module):
         self.cls_head = nn.Linear(64, n_classes)
         self.regress_head = nn.Linear(64, 1)
 
-    def forward(self, image, radiomics_feature, clinical_feature, ihc_feature):
+    def forward(self, image, radiomics_feature, clinical_feature):
         image_feature = self.feature_extractor(image)  # [2, 1000]
         image_feature_reg = self.feature_extractor(image)  # [2, 1000]
         image_feature_cls = self.drop(self.relu(self.image2vit(image_feature)))
@@ -285,8 +285,8 @@ class CTransNet(nn.Module):
         clinical_feature_reg = clinical_feature_reg.unsqueeze(1)
         clinical_feature = clinical_feature.unsqueeze(1)
 
-        ihc_feature = self.drop(self.relu(self.ihc2vit(ihc_feature)))
-        ihc_feature = ihc_feature.unsqueeze(1)
+        # ihc_feature = self.drop(self.relu(self.ihc2vit(ihc_feature)))
+        # ihc_feature = ihc_feature.unsqueeze(1)
 
         radiomics_feature_reg = self.drop(self.relu(self.radiomics2vit_reg(radiomics_feature)))
         radiomics_feature = self.drop(self.relu(self.radiomics2vit(radiomics_feature)))
