@@ -31,3 +31,8 @@ python eval.py
 ```angular2html
 python eval_os.py
 ```
+#### 2.3. Inference the Model to predict the maturation stages of TLSs and peritoneal recurrence-free survival on external validation cohort
+
+```angular2html
+python inference.py
+```
