@@ -19,7 +19,7 @@ The model weights of CTransNet can be downloaded at the [link](https://drive.goo
 You can train to get your own model.
 
 ```angular2html
-python train_vit.py
+python train.py
 ```
 
 ### 2. Evaluation
