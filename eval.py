@@ -57,10 +57,10 @@ def validate(model, data_loader, num_classes):
         for sampled_batch in data_loader:
             volume_batch, label_batch = sampled_batch['image'].cuda(
             ), sampled_batch['diagnosis'].cuda()
-            radimocis, clinical = sampled_batch['radimocis'].cuda(
+            radiomics, clinical = sampled_batch['radiomics'].cuda(
             ), sampled_batch["clinical"].cuda()
 
-            preds = model(volume_batch, radimocis, clinical)
+            preds = model(volume_batch, radiomics, clinical)
             preds = F.softmax(preds[0], dim=-1)
 
             pred_cls = preds.data.cpu().numpy()
@@ -93,10 +93,10 @@ def validate_no_ihc(model, data_loader, num_classes):
         for sampled_batch in data_loader:
             volume_batch, label_batch = sampled_batch['image'].cuda(
             ), sampled_batch['diagnosis'].cuda()
-            radimocis, ihc, clinical = sampled_batch['radimocis'].cuda(
+            radiomics, ihc, clinical = sampled_batch['radiomics'].cuda(
             ), sampled_batch['ihc'].cuda(), sampled_batch["clinical"].cuda()
 
-            preds = model(volume_batch, radimocis, clinical)[1]
+            preds = model(volume_batch, radiomics, clinical)[1]
             preds = F.softmax(preds)
 
             pred_cls = preds.data.cpu().numpy()
@@ -125,10 +125,10 @@ def validate_no_clinical(model, data_loader, num_classes):
         for sampled_batch in data_loader:
             volume_batch, label_batch = sampled_batch['image'].cuda(
             ), sampled_batch['diagnosis'].cuda()
-            radimocis, ihc, clinical = sampled_batch['radimocis'].cuda(
+            radiomics, ihc, clinical = sampled_batch['radiomics'].cuda(
             ), sampled_batch['ihc'].cuda(), sampled_batch["clinical"].cuda()
 
-            preds = model(volume_batch, radimocis, ihc)[1]
+            preds = model(volume_batch, radiomics, ihc)[1]
             preds = torch.softmax(preds, dim=1)
 
             pred_cls = preds.data.cpu().numpy()
@@ -157,7 +157,7 @@ def validate_image_clinical(model, data_loader, num_classes):
         for sampled_batch in data_loader:
             volume_batch, label_batch = sampled_batch['image'].cuda(
             ), sampled_batch['diagnosis'].cuda()
-            radimocis, ihc, clinical = sampled_batch['radimocis'].cuda(
+            radiomics, ihc, clinical = sampled_batch['radiomics'].cuda(
             ), sampled_batch['ihc'].cuda(), sampled_batch["clinical"].cuda()
 
             preds = model(volume_batch, clinical)[1]
@@ -189,10 +189,10 @@ def validate_image_radiomics(model, data_loader, num_classes):
         for sampled_batch in data_loader:
             volume_batch, label_batch = sampled_batch['image'].cuda(
             ), sampled_batch['diagnosis'].cuda()
-            radimocis, ihc, clinical = sampled_batch['radimocis'].cuda(
+            radiomics, ihc, clinical = sampled_batch['radiomics'].cuda(
             ), sampled_batch['ihc'].cuda(), sampled_batch["clinical"].cuda()
 
-            preds = model(volume_batch, radimocis)[1]
+            preds = model(volume_batch, radiomics)[1]
             preds = F.softmax(preds)
 
             pred_cls = preds.data.cpu().numpy()
@@ -221,7 +221,7 @@ def validate_image(model, data_loader, num_classes):
         for sampled_batch in data_loader:
             volume_batch, label_batch = sampled_batch['image'].cuda(
             ), sampled_batch['diagnosis'].cuda()
-            radimocis, clinical = sampled_batch['radimocis'].cuda(
+            radiomics, clinical = sampled_batch['radiomics'].cuda(
             ), sampled_batch["clinical"].cuda()
 
             preds = model(volume_batch)
