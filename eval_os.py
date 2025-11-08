@@ -70,10 +70,10 @@ def validate_DFS(model, data_loader, num_classes):
         for sampled_batch in data_loader:
             volume_batch, label_batch = sampled_batch['image'].cuda(
             ), sampled_batch['os'].cuda()
-            radimocis, clinical = sampled_batch['radimocis'].cuda(
+            radiomics, clinical = sampled_batch['radiomics'].cuda(
             ), sampled_batch["clinical"].cuda()
 
-            preds = model(volume_batch, radimocis, clinical)[-1]
+            preds = model(volume_batch, radiomics, clinical)[-1]
 
             Survival_label.append(label_batch.data.cpu().numpy()[0])
             Survival_pred = preds.detach().cpu().numpy().squeeze()
@@ -96,10 +96,10 @@ def validate_DFS_Reg(model, data_loader, num_classes):
         for sampled_batch in data_loader:
             volume_batch, label_batch = sampled_batch['image'].cuda(
             ), sampled_batch['os'].cuda()
-            radimocis, clinical = sampled_batch['radimocis'].cuda(
+            radiomics, clinical = sampled_batch['radiomics'].cuda(
             ), sampled_batch["clinical"].cuda()
 
-            preds = model(volume_batch, radimocis, clinical)[2]
+            preds = model(volume_batch, radiomics, clinical)[2]
 
             id_list.extend(sampled_batch['id'].data.cpu().numpy())
             Survival_label.append(label_batch.data.cpu().numpy()[0])
