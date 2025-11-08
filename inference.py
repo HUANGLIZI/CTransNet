@@ -99,7 +99,7 @@ class InferenceDataSet(Dataset):
             "id": id_value,
             "image": image,
             "label": label,
-            "radimocis": radiomics,  # Keep the same key name as in original code
+            "radiomics": radiomics,  # Keep the same key name as in original code
             "clinical": clinical
         }
 
@@ -118,11 +118,11 @@ def validate_TLS(model, data_loader, num_classes):
     with torch.no_grad():
         for sampled_batch in data_loader:
             volume_batch = sampled_batch['image'].cuda()
-            radimocis = sampled_batch['radimocis'].cuda()
+            radiomics = sampled_batch['radiomics'].cuda()
             clinical = sampled_batch["clinical"].cuda()
 
             # Get TLS predictions
-            preds = model(volume_batch, radimocis, clinical)
+            preds = model(volume_batch, radiomics, clinical)
             preds = F.softmax(preds[0], dim=-1)
 
             pred_cls = preds.data.cpu().numpy()
@@ -152,11 +152,11 @@ def validate_survival(model, data_loader):
     with torch.no_grad():
         for sampled_batch in data_loader:
             volume_batch = sampled_batch['image'].cuda()
-            radimocis = sampled_batch['radimocis'].cuda()
+            radiomics = sampled_batch['radiomics'].cuda()
             clinical = sampled_batch["clinical"].cuda()
 
             # Get survival predictions (regression output)
-            preds = model(volume_batch, radimocis, clinical)[2]
+            preds = model(volume_batch, radiomics, clinical)[2]
 
             # Handle both scalar and array id values
             id_value = sampled_batch['id']
