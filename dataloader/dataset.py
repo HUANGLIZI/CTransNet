@@ -91,7 +91,7 @@ class BaseDataSet(Dataset):
         image = h5f["image"][:]
         label = h5f["label"][:]
         id = h5f["id"][()]
-        radimocis = h5f["radimocis_feature"][:]
+        radimocis = h5f["radiomics_feature"][:]
         clinical = h5f["clinical_feature"][:]
         # ihc = h5f["ihc_8"][:]
         os_ = h5f["os"][:]
