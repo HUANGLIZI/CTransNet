@@ -100,9 +100,9 @@ def train(args, snapshot_path):
         for i_batch, sampled_batch in enumerate(trainloader):
             volume_batch, label_batch, os_batch = sampled_batch['image'].cuda(
             ), sampled_batch['diagnosis'].cuda(), sampled_batch['os'].cuda()
-            radimocis, clinical = sampled_batch['radimocis'].cuda(
+            radiomics, clinical = sampled_batch['radiomics'].cuda(
             ), sampled_batch["clinical"].cuda()
-            outputs = model(volume_batch, radimocis, clinical)
+            outputs = model(volume_batch, radiomics, clinical)
             contrastive_loss = nn.CosineEmbeddingLoss(margin=0.5)
             loss = NegativeLogLikelihood(-outputs[2], os_batch[:, 0], os_batch[:, 1])*0.5+L2_Regu_loss(weights=outputs[1], alpha=0.1)*0.5 + ce_loss(outputs[0], label_batch.long())+ contrastive_loss(outputs[3], outputs[4], torch.ones(volume_batch.shape[0]).cuda())*0.1
             optimizer.zero_grad()
