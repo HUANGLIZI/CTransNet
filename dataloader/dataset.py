@@ -23,9 +23,9 @@ def get_breakpoints(df, percentiles: list = [10, 20, 30, 40, 50, 60, 70, 80, 90]
     df - must contain columns 't' (time) and 'e' (death event)
     percentiles - list of percentages at which breakpoints occur (do not include 0 and 100)
     """
-    event_times = df.loc[df['st1'] == 1, 'DFS'].values
+    event_times = df.loc[df['st1'] == 1, 'PRFS'].values
     breakpoints = np.percentile(event_times, percentiles)
-    breakpoints = np.array([0] + breakpoints.tolist() + [df['DFS'].max()])
+    breakpoints = np.array([0] + breakpoints.tolist() + [df['PRFS'].max()])
 
     return breakpoints
 
@@ -66,7 +66,7 @@ class BaseDataSet(Dataset):
         classes="two",
         split="train",
         transform=None,
-        surv="DFS"
+        surv="PRFS"
     ):
         self._base_dir = base_dir
         self.sample_list = []
@@ -95,7 +95,7 @@ class BaseDataSet(Dataset):
         clinical = h5f["clinical_feature"][:]
         # ihc = h5f["ihc_8"][:]
         os_ = h5f["os"][:]
-        if self.surv == "DFS":
+        if self.surv == "PRFS":
             time = np.array([os_[0]])
             event = np.array([os_[1]])
         elif self.surv == "OS":
