@@ -124,7 +124,7 @@ def train(args, snapshot_path):
             if iter_num > 0 and iter_num % 20 == 0:
                 acc, sensitivity, specificity, precision,  F1, auc, kappa, id_list, results_list, results_list_pred,labels_list = validate(
                     model, valloader, num_classes)
-                valid_cindex, id_list_reg, Survival_time, Survival_label = validate_DFS_Reg(
+                valid_cindex, id_list_reg, Survival_time, Survival_label = validate_PRFS_Reg(
                     model, valloader, num_classes)
                 
                 writer.add_scalar('info/valid_cindex', valid_cindex, iter_num)
