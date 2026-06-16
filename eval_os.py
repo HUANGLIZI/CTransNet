@@ -60,7 +60,7 @@ def Get_survival_time(Survival_pred):
     return Survival_time
 
 
-def validate_DFS(model, data_loader, num_classes):
+def validate_PRFS(model, data_loader, num_classes):
 
     model.eval()
     Survival_time = []
@@ -85,7 +85,7 @@ def validate_DFS(model, data_loader, num_classes):
         return valid_cindex
 
 
-def validate_DFS_Reg(model, data_loader, num_classes):
+def validate_PRFS_Reg(model, data_loader, num_classes):
 
     model.eval()
     Survival_time = []
