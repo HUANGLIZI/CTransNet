@@ -39,3 +39,14 @@ python eval_os.py
 ```angular2html
 python inference.py
 ```
+## Citation
+
+```bash
+@article{li2026ctrans,
+  title={Multimodal Multitask Deep Learning for Predicting Tertiary Lymphoid Structures and Peritoneal Recurrence in Gastric Cancer: A Multicenter Study},
+  author={Li, Zihan and Zhang, Taojun and others},
+  journal={The Lancet Digital Health},
+  year={2026},
+  publisher={Elsevier}
+}
+```
