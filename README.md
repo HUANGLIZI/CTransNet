@@ -1,4 +1,4 @@
-This repo is the official implementation of **"Multimodal Multitask Deep Learning for Predicting Tertiary Lymphoid Structures and Peritoneal Recurrence in Gastric Cancer: A Multicenter Study"**.
+This repo is the official implementation of **"Multimodal multitask deep learning for predicting tertiary lymphoid structures and peritoneal recurrence in gastric cancer: a multicentre development, validation, and testing study"**.
 
 ![image](https://github.com/HUANGLIZI/CTransNet/blob/main/CTransNet.png)
 
@@ -44,7 +44,7 @@ python inference.py
 
 ```bash
 @article{li2026ctrans,
-  title={Multimodal Multitask Deep Learning for Predicting Tertiary Lymphoid Structures and Peritoneal Recurrence in Gastric Cancer: A Multicenter Study},
+  title={Multimodal multitask deep learning for predicting tertiary lymphoid structures and peritoneal recurrence in gastric cancer: a multicentre development, validation, and testing study},
   author={Li, Zihan and Zhang, Taojun and others},
   journal={The Lancet Digital Health},
   year={2026},
