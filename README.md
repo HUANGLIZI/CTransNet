@@ -1,4 +1,4 @@
-This repo is the official implementation of **"Multimodal multitask deep learning for predicting tertiary lymphoid structures and peritoneal recurrence in gastric cancer: a multicentre development, validation, and testing study"**.
+This repo is the official implementation of **"Multimodal multitask deep learning for predicting tertiary lymphoid structures and peritoneal recurrence in gastric cancer: a multicentre development, validation, and testing study"**. [Paper Link](https://www.thelancet.com/journals/landig/article/PIIS2589-7500(26)00098-1/fulltext)
 
 ![image](https://github.com/HUANGLIZI/CTransNet/blob/main/CTransNet.png)
 
